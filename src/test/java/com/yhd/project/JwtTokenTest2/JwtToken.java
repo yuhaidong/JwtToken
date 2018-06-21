@@ -70,6 +70,7 @@ public class JwtToken {
 		
 		try {
 			jwt = verifier.verify(token);
+			System.out.println("Token校验通过！");
 		} catch (Exception e) {
 			// TODO: handle exception
 //			throw new RuntimeException("登录认证已过期，请重新登陆");

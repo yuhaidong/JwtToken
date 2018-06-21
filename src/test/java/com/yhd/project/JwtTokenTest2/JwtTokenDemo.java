@@ -20,6 +20,8 @@ public class JwtTokenDemo {
 		// 显示Token
 		System.out.println("Token:" + token);
 		
+		System.out.println("第1次校验Token------------------------");
+		
 		// 解密Token
 		Map<String, Claim> claims = JwtToken.verifyToken(token);
 		
@@ -30,6 +32,8 @@ public class JwtTokenDemo {
 		// 使用过期后的Token进行校验
 		String tokenExpire = "22";
 		
+		System.out.println("第2次校验Token------------------------");
+
 		Map<String, Claim> claimsExpire = JwtToken.verifyToken(tokenExpire);
 		
 		System.out.println("测试结束");
