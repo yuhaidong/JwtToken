@@ -2,7 +2,9 @@ package com.yhd.project.JwtTokenTest2;
 
 import java.util.Map;
 
+import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.Claim;
+import com.auth0.jwt.interfaces.DecodedJWT;
 
 /**
  * 
@@ -28,6 +30,9 @@ public class JwtTokenDemo {
 		System.out.println(claims.get("name").asString());
 		System.out.println(claims.get("age").asString());
 		System.out.println(claims.get("org") == null ? null : claims.get("org").asString());
+		
+//		DecodedJWT decodedJWT = JWT.decode(token);
+//		decodedJWT.get
 	
 		// 使用过期后的Token进行校验
 		String tokenExpire = "22";

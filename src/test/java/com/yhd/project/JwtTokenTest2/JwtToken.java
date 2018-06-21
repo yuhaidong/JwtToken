@@ -50,14 +50,14 @@ public class JwtToken {
 		map.put("alg", "HS256");
 		map.put("typ", "JWT");
 		
-		String token = JWT.create()
+		String token = JWT.create()					//首先需要通过调用jwt.create()创建一个JWTCreator实例
 				.withHeader(map)					//header
 				.withClaim("name", "Free码农")		//payload
 				.withClaim("age", "28")
 				.withClaim("org", "今日头条")
 				.withExpiresAt(expirensDate)		//设置过期时间，过期时间要大于签发时间
 				.withIssuedAt(iatDate)				//设置签发时间
-				.sign(Algorithm.HMAC256(SECRET));	//加密
+				.sign(Algorithm.HMAC256(SECRET));	//使用算法器进行加密
 		
 		return token;
 	}
