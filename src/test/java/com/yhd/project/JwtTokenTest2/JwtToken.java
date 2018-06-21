@@ -16,12 +16,20 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 public class JwtToken {
 
 	/**
-	 * 公钥密码，保存在服务器，客户端是不会知道密码的，以防止被攻击
+	 * 私钥密码，保存在服务器，客户端是不会知道密码的，以防止被攻击
 	 */
 	public static String SECRET = "FreeMaNong";
 	
 	/**
 	 * 生成Token
+	 * 
+	 * JWT分成3部分：1.头部（header),2.载荷（payload, 类似于飞机上承载的物品)，3.签证（signature)
+	 * 加密后这3部分密文的字符位数为：
+	 * 					1.头部（header)：36位，Base64编码
+	 * 					2.载荷（payload)：没准，BASE64编码
+	 * 					3.签证（signature)：43位，将header和payload拼接生成一个字符串，
+	 * 									使用HS256算法和我们提供的密钥（secret,服务器自己提供的一个字符串），
+	 * 									对str进行加密生成最终的JWT
 	 * 
 	 * @return
 	 * @throws Exception
@@ -63,6 +71,7 @@ public class JwtToken {
 	 */
 	public static Map<String, Claim> verifyToken(String token) throws Exception {
 		
+		// 校验一开始，先要把保存在服务器端的密码传入校验池
 		JWTVerifier verifier = JWT.require(Algorithm.HMAC256(SECRET))
 				.build();
 		
