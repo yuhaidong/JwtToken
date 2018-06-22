@@ -1,13 +1,12 @@
 package com.yhd.project.JwtTokenTest2;
 
+import java.util.Date;
 import java.util.Map;
 
-import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.Claim;
-import com.auth0.jwt.interfaces.DecodedJWT;
 
 /**
- * 
+ * 测试JWT的Token生成及验证
  * 
  * @author flx
  *
@@ -22,24 +21,33 @@ public class JwtTokenDemo {
 		// 显示Token
 		System.out.println("Token:" + token);
 		
-		System.out.println("第1次校验Token------------------------");
+		Date dateClient = new Date(); 
+		Thread.sleep(2000);
 		
-		// 解密Token
-		Map<String, Claim> claims = JwtToken.verifyToken(token);
+		System.out.println("第1次校验Token，正常通过------------------------------------------------");
 		
-		System.out.println(claims.get("name").asString());
-		System.out.println(claims.get("age").asString());
-		System.out.println(claims.get("org") == null ? null : claims.get("org").asString());
+		JwtToken.verifyRequest(dateClient, token, 3000);
 		
-//		DecodedJWT decodedJWT = JWT.decode(token);
-//		decodedJWT.get
-	
+		Map<String, Claim> claims =  JwtToken.verifyToken2(token);
+		System.out.println("name=" + claims.get("name").asString());
+		System.out.println("age=" + claims.get("age").asString());
+		System.out.println("org=" + (claims.get("org") == null ? null : claims.get("org").asString()));
+		
 		// 使用过期后的Token进行校验
+		System.out.println("第2次校验Token，Token错误------------------------------------------------");
 		String tokenExpire = "22";
 		
-		System.out.println("第2次校验Token------------------------");
+		JwtToken.verifyRequest(dateClient, tokenExpire, 500);
 
-		Map<String, Claim> claimsExpire = JwtToken.verifyToken(tokenExpire);
+		System.out.println("第3次校验Token，Token正确，但http访问时间超时------------------------------------------------");
+		
+		Thread.sleep(1000);
+		JwtToken.verifyRequest(dateClient, token, 500);
+		
+		System.out.println("第4次校验Token，Token正确，http访问也不超时，但Token已过期（10秒钟）------------------------------------------------");
+		
+		Thread.sleep(5000);
+		JwtToken.verifyRequest(dateClient, token, 3000);
 		
 		System.out.println("测试结束");
 	}
